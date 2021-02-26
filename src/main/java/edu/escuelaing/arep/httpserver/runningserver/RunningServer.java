@@ -8,16 +8,18 @@ import edu.escuelaing.arep.nanospring.NanoSpringBoot;
 
 public class RunningServer {
 
-	public static void main(String[] args) throws FileNotFoundException, IOException, InterruptedException, ClassNotFoundException {
-		//HttpServer httpServerFirstChallenge = new HttpServer();
-		//httpServerFirstChallenge.startServer(HttpServer.getEnviorenmentPort());
-		
-		String[] path = {"edu.escuelaing.arep.nanospringdemo.NanoSpringDemo"};
-		NanoSpringBoot.getInstance().loadComponents(path);
-		NanoSpringBoot.getInstance().startServer();
+	public static void main(String[] args)
+			throws FileNotFoundException, IOException, InterruptedException, ClassNotFoundException {
+		// HttpServer httpServerFirstChallenge = new HttpServer();
+		// httpServerFirstChallenge.startServer(HttpServer.getEnviorenmentPort());
+		try {
+			String[] path = { "edu.escuelaing.arep.nanospringdemo.NanoSpringDemo" };
+			NanoSpringBoot.getInstance().loadComponents(path);
+			NanoSpringBoot.getInstance().startServer();
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+		}
 
 	}
 
 }
-
-
