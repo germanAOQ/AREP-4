@@ -73,7 +73,7 @@ public class NanoSpringBoot implements Processor{
 	}
 	
 	public static void main(String[] args) throws FileNotFoundException, IOException, InterruptedException, ClassNotFoundException {
-		NanoSpringBoot.getInstance().loadComponents(args);
+		//NanoSpringBoot.getInstance().loadComponents(args);
 		NanoSpringBoot.getInstance().startServer();
 	}
 	
