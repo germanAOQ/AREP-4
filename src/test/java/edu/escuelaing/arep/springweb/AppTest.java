@@ -26,9 +26,10 @@ public class AppTest
         URLConnection urlConnection = url.openConnection();
         BufferedReader read = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
         String inputLine = read.readLine();
-        assertTrue(inputLine.equals("Saludos desde Spring Boot!"));
+        assertTrue(inputLine.equals("Saludos desde Spring Boot!"+" "));
         read.close(); 
     }
+    
     
     @Test
     public void shouldGetHolaMessageWithQueryParams() throws IOException
@@ -38,6 +39,28 @@ public class AppTest
         BufferedReader read = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
         String inputLine = read.readLine();
         assertTrue(inputLine.equals("Saludos desde Spring Boot! test"));
+        read.close(); 
+    }
+    
+    @Test
+    public void shouldGetHelloMessage() throws IOException
+    {
+    	URL url = new URL("https://stark-ridge-65206.herokuapp.com/springapp/hello");
+        URLConnection urlConnection = url.openConnection();
+        BufferedReader read = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+        String inputLine = read.readLine();
+        assertTrue(inputLine.equals("Hi "));
+        read.close(); 
+    }
+    
+    @Test
+    public void shouldGetHelloMessageWithQueryParams() throws IOException
+    {
+    	URL url = new URL("https://stark-ridge-65206.herokuapp.com/springapp/hello?value=test");
+        URLConnection urlConnection = url.openConnection();
+        BufferedReader read = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+        String inputLine = read.readLine();
+        assertTrue(inputLine.equals("Hi test"));
         read.close(); 
     }
     

@@ -42,8 +42,10 @@ http://localhost:36000/javaLogo.jpg
 ## Pruebas
 Se presentan dos tipos pruebas: pruebas sobre el funcionamiento general de la aplicación y pruebas unitarias:
 ### Pruebas de funcionamiento general
-Para estas pruebas se intenta lanzar un mensaje a partir de la configuración de una anotación, abrir una imagen desde el servidor y ejecutar un index.html. Por defecto, a las aplicaciones Spring se accede con el path /, es por esto que el archivo index se ejecuta sin necesidad de especificarlo en la ruta. Esto se logra apreciar en los siguientes pantallazos:                                                          
+Para estas pruebas se intenta lanzar un mensaje a partir de la configuración de una anotación, añadirle un query param, abrir una imagen desde el servidor y ejecutar un index.html. Por defecto, a las aplicaciones Spring se accede con el path /, es por esto que el archivo index se ejecuta sin necesidad de especificarlo en la ruta. Esto se logra apreciar en los siguientes pantallazos:                                                          
 ![](images/Reto1_prueba_1.PNG)
+
+![](images/Reto1_prueba_4.PNG)
 
 ![](images/Reto1_prueba_2.PNG)
 
@@ -57,6 +59,8 @@ Se hacen un total de 4 pruebas unitarias que validan la correctitud de cuatro me
 ![](images/Reto2_prueba_3.PNG)
 
 ![](images/Reto2_prueba_4.PNG)
+
+![](images/Reto2_validar.PNG)
 
 ## Documentación
 
