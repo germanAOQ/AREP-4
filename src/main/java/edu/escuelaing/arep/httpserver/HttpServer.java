@@ -58,7 +58,7 @@ public class HttpServer {
 			String inputLine;
 			boolean isFirstLine = true;
 			boolean isFirstResquest = true;
-			String pathI = null;
+			String pathI = "";
 			String host = null;
 			while ((inputLine = in.readLine()) != null) {
 				System.out.println(inputLine);
