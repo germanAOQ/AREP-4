@@ -5,12 +5,13 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.ByteBuffer;
-import java.nio.file.Paths;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
+
+
 import java.awt.image.BufferedImage;
 import java.io.*;
 
@@ -28,10 +29,11 @@ public class HttpServer {
 
 	/**
 	 * @param httpPort puerto con el que inicia el servidor
-	 * @throws IOException
+	 * @throws IOException 
+	 * @throws FileNotFoundException
 	 * @throws InterruptedException
 	 */
-	public void startServer(int httpPort) throws InterruptedException, IOException {
+	public void startServer(int httpPort) throws IOException, FileNotFoundException, InterruptedException {
 		this.setPort(httpPort);
 		ServerSocket serverSocket = null;
 		try {
@@ -58,18 +60,18 @@ public class HttpServer {
 			boolean isFirstResquest = true;
 			String pathI = null;
 			String host = null;
-			boolean isADefaultLink = false;
 			while ((inputLine = in.readLine()) != null) {
 				System.out.println(inputLine);
 				if (isFirstLine) {
 					pathI = inputLine.split(" ")[1];
 					isFirstLine = false;
 				}
-				if (inputLine.contains("Host")) {
+				if(inputLine.contains("Host")) {
 					host = inputLine.split(" ")[1];
 				}
 				int i = inputLine.indexOf('/') + 1;
 				String urlInputLine = "";
+
 				if ((inputLine.contains("index") || pathI.equals("/")) && isFirstResquest) {
 					isFirstResquest = false;
 					while (!urlInputLine.endsWith(".html") && i < inputLine.length()) {
@@ -87,19 +89,13 @@ public class HttpServer {
 					} catch (FileNotFoundException e) {
 						// TODO: handle exception
 					}
-				}
-				if (inputLine.contains("jpg")) {
-					isADefaultLink = true;
+				} else if (inputLine.contains("jpg")) {
 					while (!urlInputLine.endsWith(".jpg") && i < inputLine.length()) {
 						urlInputLine += (inputLine.charAt(i++));
 					}
 					String path = "src/main/resources/public/" + urlInputLine;
-					BufferedImage bufferedImage = null;
-					try {
-						bufferedImage = ImageIO.read(new File(path));
-					} catch (IOException e) {
 
-					}
+					BufferedImage bufferedImage = ImageIO.read(new File(path));
 					ByteArrayOutputStream bytes = new ByteArrayOutputStream();
 					DataOutputStream dataImage = new DataOutputStream(outputStream);
 					ImageIO.write(bufferedImage, "jpg", bytes);
@@ -111,37 +107,34 @@ public class HttpServer {
 					break;
 				}
 			}
-			System.out.println("Este es el path: " + pathI);
+			System.out.println("Este es el path: "+pathI);
 			String resp = null;
 			boolean isNanoSpark = false;
-			for (String key : routesToProcessors.keySet()) {
-				if (pathI.contains(key) && !pathI.contains("?")) {
+			for(String key: routesToProcessors.keySet()) {
+				if(pathI.contains(key) && !pathI.contains("?")) {
 					isNanoSpark = true;
-					String link = "https://" + host + pathI;
+					String link = "https://"+host+pathI;
 					HttpClient client = HttpClient.newHttpClient();
 					HttpRequest request = HttpRequest.newBuilder().uri(URI.create(link)).build();
-					System.out.println("Path recortado: " + pathI.substring(key.length()));
-					resp = routesToProcessors.get(key).handle(pathI.substring(key.length()), request, null);
-
-				} else if (pathI.contains(key) && pathI.contains("?")) {
+					resp = routesToProcessors.get(key).handle(pathI.substring(key.length()),request, null);
+				}else if(pathI.contains(key) && pathI.contains("?")) {
 					isNanoSpark = true;
 					System.out.println("He entrado aquí");
-					String link = "https://" + host + pathI;
+					String link = "https://"+host+pathI;
 					HttpClient client = HttpClient.newHttpClient();
 					HttpRequest request = HttpRequest.newBuilder().uri(URI.create(link)).build();
-					resp = routesToProcessors.get(key).handle(pathI.substring(key.length(), pathI.indexOf("?")),
-							request, null);
+					resp = routesToProcessors.get(key).handle(pathI.substring(key.length(),pathI.indexOf("?")),request, null);
 
 				}
-
 			}
-			if (resp == null && isNanoSpark) {
+			if(resp==null && isNanoSpark) {
 				out.println(validOkHttpResponse());
-
-			} else if (resp != null) {
+			}else if(resp!=null){
 				out.println(resp);
 			}
-
+			
+			
+			
 			out.close();
 			in.close();
 			clientSocket.close();
@@ -162,11 +155,21 @@ public class HttpServer {
 	 * @return una cadena con una respuesta http.
 	 */
 	public String validOkHttpResponse() {
-		return "HTTP/1.1 200 OK\r\n" + "Content-Type: text/html\r\n" + "\r\n" + "<!DOCTYPE html>\n" + "<html>\n"
-				+ "<head>\n" + "<meta charset=\"UTF-8\">\n" + "<title>Title of the document</title>\n" + "</head>\n"
-				+ "<body>\n" + "<h1>Mi propio mensaje</h1>\n" + "</body>\n" + "</html>\n";
+		return "HTTP/1.1 200 OK\r\n"
+		        + "Content-Type: text/html\r\n"
+		         + "\r\n"
+		         + "<!DOCTYPE html>\n"
+		         + "<html>\n"
+		         + "<head>\n"
+		         + "<meta charset=\"UTF-8\">\n"
+		         + "<title>Title of the document</title>\n"
+		         + "</head>\n"
+		         + "<body>\n"
+		         + "<h1>Mi propio mensaje</h1>\n"
+		         + "</body>\n"
+		         + "</html>\n";
 	}
-
+	
 	/**
 	 * @param port
 	 */
@@ -182,8 +185,8 @@ public class HttpServer {
 	}
 
 	/**
-	 * @param path path a ser registrado
-	 * @param proc
+	 * @param path path a ser registrado 
+	 * @param proc 
 	 */
 	public void registerProcessor(String path, Processor proc) {
 		routesToProcessors.put(path, proc);
