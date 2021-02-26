@@ -42,9 +42,10 @@ public class NanoSpringBoot implements Processor{
 	@Override
 	public String handle(String path, HttpRequest req, HttpResponse res) {
 		String resp = "";
+		String queryParams = (req.uri().getQuery()==null)?"":req.uri().getQuery().substring(req.uri().getQuery().indexOf("=")+1);
 		if(requestProcessors.containsKey(path)) {
 			try {
-				resp = requestProcessors.get(path).invoke(null, null).toString();
+				resp = requestProcessors.get(path).invoke(null, null).toString() +" "+queryParams;
 			} catch (IllegalAccessException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
