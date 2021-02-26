@@ -6,7 +6,7 @@ public class NanoSpringDemo {
 	
 	@RequestMapping("/hello")
 	public static String index() {
-		return "Greetings from Spring Boot!";
+		return "Hi";
 	}
 	
 	@RequestMapping("/hola")

@@ -69,7 +69,7 @@ public class NanoSpringBoot implements Processor{
 	public void startServer() throws FileNotFoundException, IOException, InterruptedException {
 		hserver = new HttpServer();
 		hserver.registerProcessor("/springapp", this);
-		hserver.startServer(8080);
+		hserver.startServer(HttpServer.getEnviorenmentPort());
 	}
 	
 	public static void main(String[] args) throws FileNotFoundException, IOException, InterruptedException, ClassNotFoundException {
